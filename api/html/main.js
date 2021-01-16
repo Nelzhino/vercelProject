@@ -47,10 +47,8 @@ const renderListElements = (nameId, data, reduce) => {
     listItems.forEach(item => elements.appendChild(item));
 };
 
-window.onload = () => {
+const inicialForms = () => {
     const form = document.getElementById('forms-orders');
-
-
     form.onsubmit = (e) => {
         e.preventDefault();
         const mealsId = document.getElementById(ID_MEALS);
@@ -87,15 +85,15 @@ window.onload = () => {
             .catch(err => console.err(`Error with server ${err}`));
 
     }
+}
 
-
+const inicialData = () => {
     fetch(`${HOST}/api/meals/`)
         .then(response => response.json())
         .then(data => {
             renderListElements(ID_MEALS_LIST, data, reduceItemsMeals);
             const button = document.getElementById('btn-orders');
             button.removeAttribute('disabled');
-
             fetch(`${HOST}/api/orders`)
                 .then(response => response.json())
                 .then(data => {
@@ -104,7 +102,9 @@ window.onload = () => {
                 .catch(err => console.error(`Error with server orders ${err}`));
         })
         .catch(err => console.error(`Error with server meals ${err}`));
+}
 
-
-
+window.onload = () => {
+    inicialForms();
+    inicialData();
 }
