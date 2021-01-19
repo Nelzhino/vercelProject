@@ -2,22 +2,51 @@
 <html>
 
 <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8" />
     <title>App Lunch</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='app-main.css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="app-main.css" />
+    <meta charset="utf-8" />
 </head>
 
 <body>
-    <h1>App - Lunch</h1> <i class="fas fa-camera"></i>
-    <div class="container">
+    <div id="app">
+    </div>
+    <template id="login-view">
+    <div class="form-main">
+      <p class="form-title">App Lunchi</p>
+      <form id="login-form" class="login-form" autocomplete="off">
+        <div>
+          <p>Email:</p>
+          <input type="email" id="email" placeholder="write your Email" />
+        </div>
+        <div>
+          <p>Password:</p>
+          <input
+            type="password"
+            id="password"
+            placeholder="writer your Password"
+          />
+        </div>
+        <div>
+          <button type="submit" class="btn block">Login</button>
+        </div>
+      </form>
+    </div>
+  </template>
+    <template id="orders-view">
+    <div class="align-right">
+        <button id="btn-cerrar-sesion" type="button" onclick="cerrarSesion()" class="btn-orders danger">Cerrar sesi&oacute;n</button>
+    </div>    
+    <h1>App - Lunch</h1>
+    <div id="form-app" class="container">
         <div id="meals">
             <h3>List Meals</h3>
             <ul id="meals-list">
                 <p>Loading...</p>
             </ul>
-            <form id="forms-orders">
+            <form id="forms-orders" class="orders-actions">
                 <input id="id-meals" type="hidden" />
-                <input id="btn-orders" type="submit" disabled />
+                <button id="btn-orders-selected" class="btn-orders success" disabled>Escoger</button>
             </form>
         </div>
         <div id="orders">
@@ -27,7 +56,8 @@
             </ul>
         </div>
     </div>
+  </template>
 </body>
-<script src='main.js'></script>
+<script src="main.js"></script>
 
 </html>

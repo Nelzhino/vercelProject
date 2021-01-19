@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { meals, orders } = require('./routes');
+const { meals, orders, users } = require('./routes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,6 +12,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use('/api/meals', meals);
 app.use('/api/orders', orders);
+app.use('/api/auth', users);
 
 
 module.exports = app;

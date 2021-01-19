@@ -1,5 +1,5 @@
 body {
-    background-color: #feedcc;
+    background-color: #ece9e3;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
@@ -24,7 +24,7 @@ li {
 
 .container {
     display: flex;
-    margin: 10px;
+    padding: 5px 20px;
 }
 
 .container div {
@@ -34,6 +34,7 @@ li {
     margin: 10px;
     padding: 20px;
     box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    width: 100%;
 }
 
 li {
@@ -53,9 +54,8 @@ li {
     background-color: rgb(145, 91, 11);
 }
 
-#btn-orders {
+.btn-orders {
     border-radius: 20px;
-    background-color: rgb(52, 177, 58);
     padding: 10px;
     margin: 10px 30px;
     width: 150px;
@@ -63,10 +63,77 @@ li {
     font-weight: bold;
 }
 
-#btn-orders:disabled {
+.success {
+    background-color: rgb(52, 177, 58);
+}
+
+.danger {
+    background-color: rgb(226, 51, 21);
+}
+
+.success:disabled {
     background-color: rgb(103, 187, 107);
 }
 
-form {
+.orders-actions {
     text-align: center;
 }
+
+form input {
+    width: calc(100% - 15px);
+    height: 24px;
+    padding-left: 5px;
+    border: solid 0px;
+    background: #bdbdbd;
+    border-radius: 5px;
+    color: #555555;
+}
+
+.btn {
+    border: solid 0px;
+    padding: 10px 15px;
+    color: #ffffff;
+    background: #2288cc;
+    border-radius: 5px;
+}
+
+.block {
+    width: calc(100% - 8px);
+}
+
+.form-main {
+    border: 0px solid;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    padding-bottom: 30px;
+}
+
+.form-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.login-form {
+    margin-left: 5px;
+}
+
+.login-form p {
+    margin-bottom: 5px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.login-form div {
+    margin-bottom: 25px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.btn-block {}

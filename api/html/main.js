@@ -1,7 +1,9 @@
-const HOST = 'https://serverless-o6ytz66d0.vercel.app';
+const HOST = 'https://serverless.nelzhino.vercel.app';
 const ID_MEALS_LIST = 'meals-list';
 const ID_ORDERS_LIST = 'orders-list';
 const ID_MEALS = 'id-meals';
+
+let routerPage = 'login'; // login, register, orders.
 
 const stringToHTML = (s) => {
     const parse = new DOMParser();
@@ -49,50 +51,60 @@ const renderListElements = (nameId, data, reduce) => {
 
 const inicialForms = () => {
     const form = document.getElementById('forms-orders');
+    const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+
     form.onsubmit = (e) => {
         e.preventDefault();
-        const mealsId = document.getElementById(ID_MEALS);
-        const button = document.getElementById('btn-orders');
-        button.setAttribute('disabled', true);
-        if (!mealsId.value) {
-            alert('Selected a meals');
-            return;
-        }
+        setOrders();
+    };
+};
 
-        const order = {
-            meal_id: mealsId.value,
-            user_id: 'ncarabal'
-        }
+const cerrarSesion = () => {
+    localStorage.removeItem('token');
+    renderApp();
+};
 
-        const options = {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(order)
-        }
-
-        fetch(`${HOST}/api/orders/`, options)
-            .then(response => response.json())
-            .then(data => {
-                const orders = document.getElementById(ID_ORDERS_LIST);
-                const element = createElementOrder(data);
-                orders.appendChild(element);
-                mealsId.value = undefined;
-                cleanItemSelected();
-                button.removeAttribute('disabled');
-            })
-            .catch(err => console.err(`Error with server ${err}`));
-
+const setOrders = () => {
+    const mealsId = document.getElementById(ID_MEALS);
+    const button = document.getElementById('btn-orders-selected');
+    button.setAttribute('disabled', true);
+    if (!mealsId.value) {
+        alert('Selected a meals');
+        return;
     }
-}
+
+    const order = {
+        meal_id: mealsId.value
+    };
+
+    const options = {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify(order)
+    };
+
+    fetch(`${HOST}/api/orders/`, options)
+        .then(response => response.json())
+        .then(data => {
+            const orders = document.getElementById(ID_ORDERS_LIST);
+            const element = createElementOrder(data);
+            orders.appendChild(element);
+            mealsId.value = undefined;
+            cleanItemSelected();
+            button.removeAttribute('disabled');
+        })
+        .catch(err => console.err(`Error with server ${err}`));
+};
 
 const inicialData = () => {
     fetch(`${HOST}/api/meals/`)
         .then(response => response.json())
         .then(data => {
             renderListElements(ID_MEALS_LIST, data, reduceItemsMeals);
-            const button = document.getElementById('btn-orders');
+            const button = document.getElementById('btn-orders-selected');
             button.removeAttribute('disabled');
             fetch(`${HOST}/api/orders`)
                 .then(response => response.json())
@@ -102,9 +114,52 @@ const inicialData = () => {
                 .catch(err => console.error(`Error with server orders ${err}`));
         })
         .catch(err => console.error(`Error with server meals ${err}`));
-}
+};
 
-window.onload = () => {
+const actionLogin = () => {
+    const formLogin = document.getElementById('login-form');
+    formLogin.onsubmit = (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if (email.length > 0 && password.length > 0) {
+            fetch(`${HOST}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(x => x.json())
+                .then(response => {
+                    localStorage.setItem('token', response.token);
+                    routerPage = 'orders';
+                    renderHome();
+                });
+        }
+    };
+};
+
+
+const renderApp = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        const app = document.getElementById('app');
+        app.innerHTML = document.getElementById('login-view').innerHTML;
+        actionLogin();
+    } else {
+        renderHome();
+    }
+};
+
+const renderHome = () => {
+    const app = document.getElementById('app');
+    app.innerHTML = document.getElementById('orders-view').innerHTML;
     inicialForms();
     inicialData();
+};
+
+window.onload = () => {
+    renderApp();
 }

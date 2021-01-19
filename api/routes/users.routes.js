@@ -15,7 +15,6 @@ const signToken = (_id) => {
 
 router.post('/register', (request, response) => {
     const { email, password } = request.body;
-
     crypto.randomBytes(16, (err, salt) => {
         const newSalt = salt.toString('base64');
         crypto.pbkdf2(password, newSalt, 10000, 64, 'sha1', (err, key) => {
@@ -27,7 +26,7 @@ router.post('/register', (request, response) => {
                     }
                     Users.create({
                         email,
-                        passoword: encryptedPassword,
+                        password: encryptedPassword,
                         salt: newSalt
                     }).then(() => {
                         response.send('User created!!!');
@@ -35,7 +34,6 @@ router.post('/register', (request, response) => {
                 });
         });
     });
-    response.send('registro');
 });
 
 router.post('/login', (request, response) => {
@@ -56,8 +54,10 @@ router.post('/login', (request, response) => {
         })
 });
 
-router.get('/me', isAuthenticated, (request, response) => {
-    response.send(request.user);
-})
+router.get('/user/:id', isAuthenticated, (request, response) => {
+    Users.findById(request.params.id)
+        .exec()
+        .then(data => response.status(200).send(data));
+});
 
 module.exports = router;

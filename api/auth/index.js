@@ -14,7 +14,7 @@ const isAuthenticated = (req, res, next) => {
             .then(user => {
                 req.user = user;
                 next();
-            })
+            });
     });
 };
 
